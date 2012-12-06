@@ -146,7 +146,7 @@ static const double kNearbyStopRadius = 200;
 
 - (OBAStopSectionType) sectionTypeForSection:(NSUInteger)section {
 
-    if (_result.stop) {
+    if (self.result.stop) {
         
         int offset = 0;
                 
@@ -250,7 +250,7 @@ static const double kNearbyStopRadius = 200;
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
     
-    OBAStopV2 * stop = _result.stop;
+    OBAStopV2 * stop = self.result.stop;
     
     if( stop ) {
         int count = 2;
@@ -413,7 +413,7 @@ static const double kNearbyStopRadius = 200;
 
 - (NSUInteger) sectionIndexForSectionType:(OBAStopSectionType)section {
 
-    OBAStopV2 * stop = _result.stop;
+    OBAStopV2 * stop = self.result.stop;
     
     if( stop ) {
         
@@ -539,7 +539,7 @@ static const double kNearbyStopRadius = 200;
 }
 
 - (void)tableView:(UITableView *)tableView didSelectServiceAlertRowAtIndexPath:(NSIndexPath *)indexPath {
-    NSArray * situations = _result.situations;
+    NSArray * situations = self.result.situations;
     [OBAPresentation showSituations:situations withAppContext:_appContext navigationController:self.navigationController args:nil];
 }
 
@@ -555,7 +555,7 @@ static const double kNearbyStopRadius = 200;
 - (void)tableView:(UITableView *)tableView didSelectActionRowAtIndexPath:(NSIndexPath *)indexPath {
     switch(indexPath.row) {
         case 0: {
-            OBABookmarkV2 * bookmark = [_appContext.modelDao createTransientBookmark:_result.stop];
+            OBABookmarkV2 * bookmark = [_appContext.modelDao createTransientBookmark:self.result.stop];
             
             OBAEditStopBookmarkViewController * vc = [[OBAEditStopBookmarkViewController alloc] initWithApplicationContext:_appContext bookmark:bookmark editType:OBABookmarkEditNew];
             [self.navigationController pushViewController:vc animated:YES];
@@ -564,13 +564,13 @@ static const double kNearbyStopRadius = 200;
         }
 
         case 1: {
-            NSArray * situations = _result.situations;
+            NSArray * situations = self.result.situations;
             [OBAPresentation showSituations:situations withAppContext:_appContext navigationController:self.navigationController args:nil];
             break;
         }
 
         case 2: {
-            OBAReportProblemViewController * vc = [[OBAReportProblemViewController alloc] initWithApplicationContext:_appContext stop:_result.stop];
+            OBAReportProblemViewController * vc = [[OBAReportProblemViewController alloc] initWithApplicationContext:_appContext stop:self.result.stop];
             [self.navigationController pushViewController:vc animated:YES];
             
             break;
@@ -605,9 +605,9 @@ NSComparisonResult predictedArrivalSortByRoute(id o1, id o2, void * context) {
         
     OBAModelDAO * modelDao = _appContext.modelDao;
     
-    OBAStopV2 * stop = _result.stop;
+    OBAStopV2 * stop = self.result.stop;
     
-    NSArray * predictedArrivals = _result.arrivalsAndDepartures;
+    NSArray * predictedArrivals = self.result.arrivalsAndDepartures;
     
     [_allArrivals removeAllObjects];
     [_filteredArrivals removeAllObjects];
@@ -645,7 +645,7 @@ NSComparisonResult predictedArrivalSortByRoute(id o1, id o2, void * context) {
         }
     }
     
-    _serviceAlerts = [modelDao getServiceAlertsModelForSituations:_result.situations];
+    _serviceAlerts = [modelDao getServiceAlertsModelForSituations:self.result.situations];
     
     [self.tableView reloadData];
 }
