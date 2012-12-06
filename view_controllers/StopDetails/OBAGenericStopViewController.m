@@ -150,26 +150,26 @@ static const double kNearbyStopRadius = 200;
         
         int offset = 0;
 
-        if( self.showServiceAlerts && self.serviceAlerts.unreadCount > 0) {
+        if (self.showServiceAlerts && self.serviceAlerts.unreadCount > 0) {
 
-            if( section == offset )
+            if (section == offset)
                 return OBAStopSectionTypeServiceAlerts;
             offset++;
         }
         
-        if( section == offset ) {
+        if (section == offset) {
             return OBAStopSectionTypeArrivals;
         }
         offset++;
         
-        if( [self.filteredArrivals count] != [self.allArrivals count] ) {
-            if( section == offset )
+        if ([self.filteredArrivals count] != [self.allArrivals count]) {
+            if (section == offset)
                 return OBAStopSectionTypeFilter;
             offset++;
         }
         
-        if( self.showActions ) {
-            if( section == offset)
+        if (self.showActions) {
+            if (section == offset)
                 return OBAStopSectionTypeActions;
             offset++;
         }
@@ -252,11 +252,11 @@ static const double kNearbyStopRadius = 200;
     
     OBAStopV2 * stop = self.result.stop;
     
-    if( stop ) {
+    if (stop) {
         int count = 2;
-        if( [self.filteredArrivals count] != [self.allArrivals count] )
+        if ([self.filteredArrivals count] != [self.allArrivals count])
             count++;
-        if( self.showServiceAlerts && self.serviceAlerts.unreadCount > 0 )
+        if (self.showServiceAlerts && self.serviceAlerts.unreadCount > 0)
             count++;
         return count;
     }
@@ -338,14 +338,12 @@ static const double kNearbyStopRadius = 200;
             [self determineFilterTypeCellText:cell filteringEnabled:self.showFilteredArrivals];
             [self.tableView deselectRowAtIndexPath:indexPath animated:YES];
             
-            if ([self.filteredArrivals count] == 0)
-            {
+            if ([self.filteredArrivals count] == 0) {
                 // We're showing a "no arrivals in the next 30 minutes" message, so our insertion/deletion math below would be wrong.
                 // Instead, just refresh the section with a fade.
                 [self.tableView reloadSections:[NSIndexSet indexSetWithIndex:arrivalsViewSection] withRowAnimation:UITableViewRowAnimationFade];
             }
-            else if ([self.allArrivals count] != [self.filteredArrivals count])
-            {
+            else if ([self.allArrivals count] != [self.filteredArrivals count]) {
                 // Display a nice animation of the cells when changing our filter settings
                 NSMutableArray *modificationArray = [NSMutableArray array];
                 
@@ -415,28 +413,28 @@ static const double kNearbyStopRadius = 200;
 
     OBAStopV2 * stop = self.result.stop;
     
-    if( stop ) {
+    if (stop) {
         
         int offset = 0;
                 
-        if( self.showServiceAlerts && self.serviceAlerts.unreadCount > 0) {
-            if( section == OBAStopSectionTypeServiceAlerts )
+        if (self.showServiceAlerts && self.serviceAlerts.unreadCount > 0) {
+            if (section == OBAStopSectionTypeServiceAlerts)
                 return offset;
             offset++;
         }
         
-        if( section == OBAStopSectionTypeArrivals )
+        if (section == OBAStopSectionTypeArrivals)
             return offset;
         offset++;
         
-        if( [self.filteredArrivals count] != [self.allArrivals count] ) {
-            if( section == OBAStopSectionTypeFilter )
+        if ([self.filteredArrivals count] != [self.allArrivals count]) {
+            if (section == OBAStopSectionTypeFilter)
                 return offset;
             offset++;
         }
         
-        if( self.showActions ) {
-            if( section == OBAStopSectionTypeActions)
+        if (self.showActions) {
+            if (section == OBAStopSectionTypeActions)
                 return offset;
             offset++;
         }
@@ -453,7 +451,7 @@ static const double kNearbyStopRadius = 200;
 - (UITableViewCell*)tableView:(UITableView*)tableView predictedArrivalCellForRowAtIndexPath:(NSIndexPath*)indexPath {
     NSArray * arrivals = self.showFilteredArrivals ? self.filteredArrivals : self.allArrivals;
     
-    if( [arrivals count] == 0 ) {
+    if ([arrivals count] == 0) {
         UITableViewCell * cell = [UITableViewCell getOrCreateCellForTableView:tableView];
         cell.textLabel.text = NSLocalizedString(@"No arrivals in the next 30 minutes",@"[arrivals count] == 0");
         cell.textLabel.textAlignment = UITextAlignmentCenter;
@@ -473,7 +471,7 @@ static const double kNearbyStopRadius = 200;
 
 
 - (void)determineFilterTypeCellText:(UITableViewCell*)filterTypeCell filteringEnabled:(bool)filteringEnabled {
-    if( filteringEnabled )
+    if (filteringEnabled)
         filterTypeCell.textLabel.text = NSLocalizedString(@"Show all arrivals",@"filteringEnabled");
     else
         filterTypeCell.textLabel.text = NSLocalizedString(@"Show filtered arrivals",@"!filteringEnabled");    
@@ -545,7 +543,7 @@ static const double kNearbyStopRadius = 200;
 
 - (void)tableView:(UITableView *)tableView didSelectTripRowAtIndexPath:(NSIndexPath *)indexPath {
     NSArray * arrivals = self.showFilteredArrivals ? self.filteredArrivals : self.allArrivals;
-    if ( 0 <= indexPath.row && indexPath.row < [arrivals count] ) {
+    if ( 0 <= indexPath.row && indexPath.row < [arrivals count]) {
         OBAArrivalAndDepartureV2 * arrivalAndDeparture = arrivals[indexPath.row];
         OBAArrivalAndDepartureViewController * vc = [[OBAArrivalAndDepartureViewController alloc] initWithApplicationContext:self.appContext arrivalAndDeparture:arrivalAndDeparture];
         [self.navigationController pushViewController:vc animated:YES];
@@ -595,7 +593,7 @@ NSComparisonResult predictedArrivalSortByRoute(id o1, id o2, void * context) {
     OBARouteV2 * r2 = pa2.route;
     NSComparisonResult r = [r1 compareUsingName:r2];
     
-    if( r == 0)
+    if (r == 0)
         r = predictedArrivalSortByDepartureTime(pa1,pa2,context);
     
     return r;
@@ -629,7 +627,7 @@ NSComparisonResult predictedArrivalSortByRoute(id o1, id o2, void * context) {
         
         for( OBAArrivalAndDepartureV2 * pa in predictedArrivals) {
             [self.allArrivals addObject:pa];
-            if( [prefs isRouteIdEnabled:pa.routeId] )
+            if ([prefs isRouteIdEnabled:pa.routeId])
                 [self.filteredArrivals addObject:pa];
         }
         
